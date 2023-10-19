@@ -1,9 +1,8 @@
 {
   "name": "node",
   "version": "1.0.0",
- 
   "description": "",
-  "homepage": "https://MateichukNina.github.io/goit-node-hw-1/",
+  "homepage": "https://github.com/MateichukNina/goit-node-hw-1/",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -12,6 +11,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
   }
 }

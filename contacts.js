@@ -1,6 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
-const contactsPath = path.join(__dirname, 'contacts.json');
+const contactsPath = path.join(__dirname, './db/contacts.json');
 
 async function listContacts() {
   try {
@@ -12,17 +12,54 @@ async function listContacts() {
   }
 }
 
-function getContactById(contactId) {
-  // ...твой код. Возвращает объект контакта с таким id. Возвращает null, если объект с таким id не найден.
+async function getContactById(contactId) {
+  try{
+  const contacts =await listContacts();
+  const contact = contacts.find(cont => cont.id === contactId);
+  return contact||null;}
+  catch(error){
+    throw error;
+  }
 }
 
-function removeContact(contactId) {
-  // ...твой код. Возвращает объект удаленного контакта. Возвращает null, если объект с таким id не найден.
-}
+async function removeContact(contactId) {
+ 
+  try{
+    const contacts = await listContacts();
+    const index = contacts.findIndex(cont => cont.id === contactId);
 
-function addContact(name, email, phone) {
-  // ...твой код. Возвращает объект добавленного контакта. 
-}
+  if(index === -1){
+    return null;
+  }
+  const removedContact = contacts[index];
+  contacts.splice(index, 1);
+
+  fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2))
+  return removedContact;
+  }catch(error){
+    throw error;
+  }
 
 
-export default {listContacts, getContactById, removeContact, addContact};
+  
+};
+
+async function addContact(name, email, phone) {
+  try {
+    const contacts = await listContacts();
+    const newContact = {
+      id: Math.max(...contacts.map(c => c.id), 0) + 1,
+      name,
+      email,
+      phone,
+    };
+
+    contacts.push(newContact);
+    await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+    return newContact;
+  } catch (error) {
+    throw error;
+  }}
+
+
+module.exports = { listContacts, getContactById, removeContact, addContact };
