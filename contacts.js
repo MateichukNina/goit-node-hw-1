@@ -47,8 +47,9 @@ async function removeContact(contactId) {
 async function addContact(name, email, phone) {
   try {
     const contacts = await listContacts();
+    const maxId = contacts.length > 0 ? Math.max(...contacts.map(cont => Number(cont.id))) : 0;
     const newContact = {
-      id: Math.max(...contacts.map(c => c.id), 0) + 1,
+      id: maxId + 1,
       name,
       email,
       phone,
