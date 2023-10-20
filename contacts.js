@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const contactsPath = path.join(__dirname, './db/contacts.json');
+const { v4: uuidv4 } = require('uuid');
 
 async function listContacts() {
   try {
@@ -39,17 +40,14 @@ async function removeContact(contactId) {
   }catch(error){
     throw error;
   }
-
-
   
 };
 
 async function addContact(name, email, phone) {
   try {
     const contacts = await listContacts();
-    const maxId = contacts.length > 0 ? Math.max(...contacts.map(cont => Number(cont.id))) : 0;
     const newContact = {
-      id: maxId + 1,
+      id: uuidv4(),
       name,
       email,
       phone,
